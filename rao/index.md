@@ -113,4 +113,10 @@ Cuando eliges hosting hosted, create-jazz provisiona app y rellena .env con llav
 - React paso a paso: [react-how-to.md](./react-how-to.md)
 - React camino 1 detallado (localfirst): [react-localfirst-camino-1.md](./react-localfirst-camino-1.md)
 - React sync server (camino 1): [react-localfirst-sync-server.md](./react-localfirst-sync-server.md)
+- React camino 2 detallado (hybrid): [react-hybrid-camino-2.md](./react-hybrid-camino-2.md)
+- React camino 3 detallado (betterauth): [react-betterauth-camino-3.md](./react-betterauth-camino-3.md)
+- React matriz comparativa (3 caminos): [react-matriz-comparativa-3-caminos.md](./react-matriz-comparativa-3-caminos.md)
+- React roadmap tecnico (etapas): [react-temas-roadmap.md](./react-temas-roadmap.md)
+- React etapa 1 (branches + entornos): [react-branches-entornos.md](./react-branches-entornos.md)
+- React etapa 2 (schema + flujo): [react-schema-datos-y-flujo.md](./react-schema-datos-y-flujo.md)
 

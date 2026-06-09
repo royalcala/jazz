@@ -27,6 +27,24 @@ Detalle tecnico completo del camino 1:
 - Sync server del camino 1: [react-localfirst-sync-server.md](./react-localfirst-sync-server.md)
 - Recovery phrase y passkey backup: [react-localfirst-recovery-backup.md](./react-localfirst-recovery-backup.md)
 
+Detalle tecnico completo del camino 2:
+
+- [react-hybrid-camino-2.md](./react-hybrid-camino-2.md)
+
+Detalle tecnico completo del camino 3:
+
+- [react-betterauth-camino-3.md](./react-betterauth-camino-3.md)
+
+Vista comparativa de los 3 caminos:
+
+- [react-matriz-comparativa-3-caminos.md](./react-matriz-comparativa-3-caminos.md)
+
+Roadmap tecnico para desarrollar por etapas:
+
+- [react-temas-roadmap.md](./react-temas-roadmap.md)
+- Entregable etapa 1 (branches + entornos): [react-branches-entornos.md](./react-branches-entornos.md)
+- Entregable etapa 2 (schema + flujo): [react-schema-datos-y-flujo.md](./react-schema-datos-y-flujo.md)
+
 ## 2) Crear el proyecto
 
 Opcional interactivo:
