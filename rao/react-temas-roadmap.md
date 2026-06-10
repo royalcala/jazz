@@ -14,9 +14,10 @@ Este documento es el plan de trabajo para cubrir los temas clave de Jazz en Reac
 8. Auth e identidad por camino (localfirst/hybrid/betterauth)
 9. Migraciones y evolucion de schema
 10. Publicacion de catalogo (schema/migrations/permissions)
-11. Operacion de auth server (JWT/JWKS) en hybrid/betterauth
-12. Recuperacion de identidad (recovery phrase/passkey)
-13. Produccion y operacion continua
+11. Backend SDK (createJazzContext) y API de integraciones externas
+12. Operacion de auth server (JWT/JWKS) en hybrid/betterauth
+13. Recuperacion de identidad (recovery phrase/passkey)
+14. Produccion y operacion continua
 
 ## 2) Detalle por etapa
 
@@ -245,8 +246,32 @@ Referencias:
 
 1. [packages/jazz-tools/src/cli.ts](../packages/jazz-tools/src/cli.ts)
 2. [packages/jazz-tools/src/dev/index.ts](../packages/jazz-tools/src/dev/index.ts)
+3. Guia detallada de publicacion de catalogo: [react-publicacion-catalogo-schema-migrations-permissions.md](./react-publicacion-catalogo-schema-migrations-permissions.md)
+4. MCP de docs de Jazz (opcional para VS Code): [https://jazz.tools/docs/reference/mcp](https://jazz.tools/docs/reference/mcp)
 
-### Etapa 11: Auth server y JWT/JWKS (si aplica)
+### Etapa 11: Backend SDK y API de integraciones externas
+
+Objetivo:
+
+1. Centralizar contexto backend de Jazz en un archivo unico.
+2. Definir cuando usar `asBackend`, `forRequest`, `forSession` y attribution.
+3. Habilitar integraciones externas (email/notificaciones/jobs) con side-effects server-side.
+
+Entregables:
+
+1. Archivo backend SDK (`server/jazz-context.ts` o equivalente) versionado.
+2. Rutas API con scoping correcto de identidad.
+3. Patron de outbox/retry para integraciones externas.
+
+Referencias:
+
+1. [docs/content/docs/getting-started/server-setup.mdx](../docs/content/docs/getting-started/server-setup.mdx)
+2. [packages/jazz-tools/src/backend/create-jazz-context.ts](../packages/jazz-tools/src/backend/create-jazz-context.ts)
+3. [examples/docs/todo-server-ts/src/main.ts](../examples/docs/todo-server-ts/src/main.ts)
+4. [examples/docs/todo-server-ts/src/request-context.ts](../examples/docs/todo-server-ts/src/request-context.ts)
+5. Guia detallada de backend SDK e integraciones: [react-backend-sdk-api-integraciones.md](./react-backend-sdk-api-integraciones.md)
+
+### Etapa 12: Auth server y JWT/JWKS (si aplica)
 
 Objetivo:
 
@@ -267,7 +292,7 @@ Referencias:
 5. [docs/content/docs/recipes/auth/auth-provider-integration.mdx](../docs/content/docs/recipes/auth/auth-provider-integration.mdx)
 6. [docs/content/docs/recipes/auth/better-auth-adapter.mdx](../docs/content/docs/recipes/auth/better-auth-adapter.mdx)
 
-### Etapa 12: Recuperacion de identidad
+### Etapa 13: Recuperacion de identidad
 
 Objetivo:
 
@@ -284,7 +309,7 @@ Referencias:
 2. [packages/jazz-tools/src/runtime/recovery-phrase.ts](../packages/jazz-tools/src/runtime/recovery-phrase.ts)
 3. [packages/jazz-tools/src/runtime/passkey-backup.ts](../packages/jazz-tools/src/runtime/passkey-backup.ts)
 
-### Etapa 13: Produccion y operacion continua
+### Etapa 14: Produccion y operacion continua
 
 Objetivo:
 
