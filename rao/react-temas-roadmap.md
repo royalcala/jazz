@@ -228,6 +228,7 @@ Referencias:
 2. [packages/jazz-tools/src/cli.ts](../packages/jazz-tools/src/cli.ts)
 3. [examples/docs/todo-server-ts/docs/migrations-workflow.sh](../examples/docs/todo-server-ts/docs/migrations-workflow.sh)
 4. [examples/docs/todo-server-ts/migrations/20260318-add-description-a01f5c72ec47-311995e9a178.ts](../examples/docs/todo-server-ts/migrations/20260318-add-description-a01f5c72ec47-311995e9a178.ts)
+5. Guia detallada de migraciones y evolucion de schema: [react-migraciones-evolucion-schema.md](./react-migraciones-evolucion-schema.md)
 
 ### Etapa 10: Publicacion de catalogo
 

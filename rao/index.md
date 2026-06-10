@@ -126,4 +126,5 @@ Cuando eliges hosting hosted, create-jazz provisiona app y rellena .env con llav
 - React writing (data/files/blobs): [react-writing-data-files-blobs.md](./react-writing-data-files-blobs.md)
 - React topologia sync (local/edge/global): [react-topologia-sync-edge-global.md](./react-topologia-sync-edge-global.md)
 - React internals de QuerySettled/completitud: [react-query-settled-completitud.md](./react-query-settled-completitud.md)
+- React migraciones y evolucion de schema: [react-migraciones-evolucion-schema.md](./react-migraciones-evolucion-schema.md)
 
