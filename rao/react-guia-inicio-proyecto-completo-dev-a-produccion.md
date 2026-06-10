@@ -288,6 +288,74 @@ Ademas, para modelos de membresia:
 
 1. Usar bootstrap insert para el primer admin cuando aplique.
 
+### 11.1 Donde corre el seed
+
+Depende del tipo de dato que quieres inicializar:
+
+1. Cliente (`web`): datos personales por usuario, demos locales o UX de primer uso.
+2. Backend (`api`/job): datos compartidos de negocio (catalogos, defaults de tenant, plantillas globales).
+
+Regla:
+
+1. Si el dato lo deben compartir muchos usuarios, siembralo en backend.
+2. Si el dato es solo del usuario actual, puede sembrarse en cliente.
+
+### 11.2 Cuando correr el seed
+
+1. Arranque de entorno nuevo (dev/staging) para baseline inicial.
+2. Despues de reset manual coordinado (Auth + Jazz).
+3. En arranque de app o login, solo si la logica es idempotente.
+
+### 11.3 Patron seed en cliente (idempotente)
+
+```ts
+import type { Db } from "jazz-tools";
+import { app } from "../schema";
+
+export async function seedClientDefaultProject(db: Db) {
+  // Leer en tier global reduce duplicados cuando hay varios clientes inicializando a la vez.
+  const existing = await db.all(app.projects.where({ name: "Default" }), { tier: "global" });
+
+  if (existing.length === 0) {
+    db.insert(app.projects, { name: "Default" });
+  }
+}
+```
+
+Uso recomendado:
+
+1. Llamarlo cuando ya tengas sesion/contexto listo.
+2. No depender de que "solo corre una vez".
+
+### 11.4 Patron seed en backend (idempotente)
+
+```ts
+import { createJazzContext } from "jazz-tools/backend";
+import { app } from "../schema";
+import { permissions } from "../permissions";
+
+const context = createJazzContext({
+  app,
+  permissions,
+  // serverUrl/appId/secrets segun tu entorno
+});
+
+export async function seedSharedCatalog() {
+  const db = context.asBackend();
+
+  const rows = await db.all(app.catalog.where({ code: "DEFAULT_STATUS" }), { tier: "global" });
+
+  if (rows.length === 0) {
+    db.insert(app.catalog, { code: "DEFAULT_STATUS", label: "Pending" });
+  }
+}
+```
+
+Uso recomendado:
+
+1. Ejecutarlo en bootstrap de servicio o endpoint interno de inicializacion.
+2. En produccion, proteger esa ruta/ejecucion (no exponerla al cliente final).
+
 ## 12) Event-driven de negocio (API + worker)
 
 Patron recomendado:
@@ -421,3 +489,5 @@ Y cargar `packages/inspector/dist-extension` en `chrome://extensions` (Load unpa
 14. Inspector (referencia oficial): [docs/content/docs/reference/inspector.mdx](../docs/content/docs/reference/inspector.mdx)
 15. Inspector package (modo standalone/extension): [packages/inspector/README.md](../packages/inspector/README.md)
 16. Guia detallada de Inspector: [react-jazz-inspector-reading-writing-como-correr.md](./react-jazz-inspector-reading-writing-como-correr.md)
+17. Writing data y tiers: [docs/content/docs/writing/writing-data.mdx](../docs/content/docs/writing/writing-data.mdx)
+18. Permissions y testApp.seed: [docs/content/docs/auth/permissions.mdx](../docs/content/docs/auth/permissions.mdx)
