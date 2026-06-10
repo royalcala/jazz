@@ -16,9 +16,11 @@ Este documento es el plan de trabajo para cubrir los temas clave de Jazz en Reac
 10. Publicacion de catalogo (schema/migrations/permissions)
 11. Backend SDK (createJazzContext) y API de integraciones externas
 12. Arquitectura event-driven vs API HTTP
-13. Operacion de auth server (JWT/JWKS) en hybrid/betterauth
-14. Recuperacion de identidad (recovery phrase/passkey)
-15. Produccion y operacion continua
+13. Persistencia interna y visores externos (storage/modelado/branches/usuarios)
+14. Operacion de auth server (JWT/JWKS) en hybrid/betterauth
+15. Recuperacion de identidad (recovery phrase/passkey)
+16. Produccion y operacion continua
+17. Operacion con Jazz Inspector (reading/writing/observabilidad)
 
 ## 2) Detalle por etapa
 
@@ -295,7 +297,30 @@ Referencias:
 5. Guia detallada event-driven vs HTTP: [react-event-driven-vs-api-http.md](./react-event-driven-vs-api-http.md)
 6. Guia de side effects, anti-entropy y no-perdida de eventos: [react-side-effects-negocio-outbox-anti-entropy.md](./react-side-effects-negocio-outbox-anti-entropy.md)
 
-### Etapa 13: Auth server y JWT/JWKS (si aplica)
+### Etapa 13: Persistencia interna y visores externos
+
+Objetivo:
+
+1. Entender como persiste Jazz por runtime (browser/node/server).
+2. Entender como se modelan fisicamente filas, branches y metadatos en storage.
+3. Definir limites y estrategia segura para inspeccion externa.
+
+Entregables:
+
+1. Mapa de persistencia por entorno (OPFS/SQLite/RocksDB/memory).
+2. Guia de lectura de modelo KV interno (keys, raw tables, historia, catalogo).
+3. Checklist de integracion read-only con visor externo.
+
+Referencias:
+
+1. [crates/jazz-tools/src/storage/sqlite.rs](../crates/jazz-tools/src/storage/sqlite.rs)
+2. [crates/jazz-tools/src/storage/key_codec.rs](../crates/jazz-tools/src/storage/key_codec.rs)
+3. [crates/jazz-tools/src/storage/mod.rs](../crates/jazz-tools/src/storage/mod.rs)
+4. [crates/jazz-tools/src/query_manager/types/branch.rs](../crates/jazz-tools/src/query_manager/types/branch.rs)
+5. [packages/jazz-tools/src/backend/create-jazz-context.ts](../packages/jazz-tools/src/backend/create-jazz-context.ts)
+6. Guia detallada de persistencia interna y visor externo: [react-persistencia-interna-modelado-branches-usuarios-registros-visor-externo.md](./react-persistencia-interna-modelado-branches-usuarios-registros-visor-externo.md)
+
+### Etapa 14: Auth server y JWT/JWKS (si aplica)
 
 Objetivo:
 
@@ -316,7 +341,7 @@ Referencias:
 5. [docs/content/docs/recipes/auth/auth-provider-integration.mdx](../docs/content/docs/recipes/auth/auth-provider-integration.mdx)
 6. [docs/content/docs/recipes/auth/better-auth-adapter.mdx](../docs/content/docs/recipes/auth/better-auth-adapter.mdx)
 
-### Etapa 14: Recuperacion de identidad
+### Etapa 15: Recuperacion de identidad
 
 Objetivo:
 
@@ -333,7 +358,7 @@ Referencias:
 2. [packages/jazz-tools/src/runtime/recovery-phrase.ts](../packages/jazz-tools/src/runtime/recovery-phrase.ts)
 3. [packages/jazz-tools/src/runtime/passkey-backup.ts](../packages/jazz-tools/src/runtime/passkey-backup.ts)
 
-### Etapa 15: Produccion y operacion continua
+### Etapa 16: Produccion y operacion continua
 
 Objetivo:
 
@@ -351,6 +376,28 @@ Referencias:
 1. [starters/react-hybrid/README.md](../starters/react-hybrid/README.md)
 2. [starters/react-betterauth/README.md](../starters/react-betterauth/README.md)
 3. [starters/react-localfirst/README.md](../starters/react-localfirst/README.md)
+
+### Etapa 17: Operacion con Jazz Inspector
+
+Objetivo:
+
+1. Operar inspeccion de datos y suscripciones en desarrollo/soporte.
+2. Usar el inspector para lectura y mutaciones controladas.
+3. Estandarizar arranque en modo standalone y extension.
+
+Entregables:
+
+1. Runbook de arranque (`dev`, `build:extension`, conexion inicial).
+2. Checklist de uso seguro para mutaciones desde UI.
+3. Flujo de debugging con Data Explorer y Live Query.
+
+Referencias:
+
+1. [packages/inspector/README.md](../packages/inspector/README.md)
+2. [packages/inspector/package.json](../packages/inspector/package.json)
+3. [packages/inspector/src/components/data-explorer/TableDataGrid.tsx](../packages/inspector/src/components/data-explorer/TableDataGrid.tsx)
+4. [packages/inspector/src/pages/live-query/index.tsx](../packages/inspector/src/pages/live-query/index.tsx)
+5. Guia detallada de Jazz Inspector: [react-jazz-inspector-reading-writing-como-correr.md](./react-jazz-inspector-reading-writing-como-correr.md)
 
 ## 3) Seguimiento sugerido
 

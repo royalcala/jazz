@@ -131,4 +131,6 @@ Cuando eliges hosting hosted, create-jazz provisiona app y rellena .env con llav
 - React backend SDK + API de integraciones externas: [react-backend-sdk-api-integraciones.md](./react-backend-sdk-api-integraciones.md)
 - React arquitectura event-driven vs API HTTP: [react-event-driven-vs-api-http.md](./react-event-driven-vs-api-http.md)
 - React side effects de negocio (outbox + anti-entropy): [react-side-effects-negocio-outbox-anti-entropy.md](./react-side-effects-negocio-outbox-anti-entropy.md)
+- React persistencia interna + visor externo: [react-persistencia-interna-modelado-branches-usuarios-registros-visor-externo.md](./react-persistencia-interna-modelado-branches-usuarios-registros-visor-externo.md)
+- React Jazz Inspector (reading/writing + como correrlo): [react-jazz-inspector-reading-writing-como-correr.md](./react-jazz-inspector-reading-writing-como-correr.md)
 
