@@ -15,9 +15,10 @@ Este documento es el plan de trabajo para cubrir los temas clave de Jazz en Reac
 9. Migraciones y evolucion de schema
 10. Publicacion de catalogo (schema/migrations/permissions)
 11. Backend SDK (createJazzContext) y API de integraciones externas
-12. Operacion de auth server (JWT/JWKS) en hybrid/betterauth
-13. Recuperacion de identidad (recovery phrase/passkey)
-14. Produccion y operacion continua
+12. Arquitectura event-driven vs API HTTP
+13. Operacion de auth server (JWT/JWKS) en hybrid/betterauth
+14. Recuperacion de identidad (recovery phrase/passkey)
+15. Produccion y operacion continua
 
 ## 2) Detalle por etapa
 
@@ -271,7 +272,30 @@ Referencias:
 4. [examples/docs/todo-server-ts/src/request-context.ts](../examples/docs/todo-server-ts/src/request-context.ts)
 5. Guia detallada de backend SDK e integraciones: [react-backend-sdk-api-integraciones.md](./react-backend-sdk-api-integraciones.md)
 
-### Etapa 12: Auth server y JWT/JWKS (si aplica)
+### Etapa 12: Arquitectura event-driven vs API HTTP
+
+Objetivo:
+
+1. Elegir arquitectura correcta para procesos sincronos y asincros.
+2. Definir cuando usar request/response y cuando usar procesamiento por eventos.
+3. Evitar acoplamiento fuerte en integraciones externas (email/notificaciones/webhooks).
+
+Entregables:
+
+1. Decision documentada por caso de uso (HTTP, event-driven, hibrido).
+2. Patron outbox definido para side effects.
+3. Reglas de idempotencia, retries y trazabilidad.
+
+Referencias:
+
+1. [docs/content/docs/concepts/how-sync-works.mdx](../docs/content/docs/concepts/how-sync-works.mdx)
+2. [docs/content/docs/reading/queries.mdx](../docs/content/docs/reading/queries.mdx)
+3. [packages/jazz-tools/src/runtime/db.ts](../packages/jazz-tools/src/runtime/db.ts)
+4. [packages/jazz-tools/src/backend/create-jazz-context.ts](../packages/jazz-tools/src/backend/create-jazz-context.ts)
+5. Guia detallada event-driven vs HTTP: [react-event-driven-vs-api-http.md](./react-event-driven-vs-api-http.md)
+6. Guia de side effects, anti-entropy y no-perdida de eventos: [react-side-effects-negocio-outbox-anti-entropy.md](./react-side-effects-negocio-outbox-anti-entropy.md)
+
+### Etapa 13: Auth server y JWT/JWKS (si aplica)
 
 Objetivo:
 
@@ -292,7 +316,7 @@ Referencias:
 5. [docs/content/docs/recipes/auth/auth-provider-integration.mdx](../docs/content/docs/recipes/auth/auth-provider-integration.mdx)
 6. [docs/content/docs/recipes/auth/better-auth-adapter.mdx](../docs/content/docs/recipes/auth/better-auth-adapter.mdx)
 
-### Etapa 13: Recuperacion de identidad
+### Etapa 14: Recuperacion de identidad
 
 Objetivo:
 
@@ -309,7 +333,7 @@ Referencias:
 2. [packages/jazz-tools/src/runtime/recovery-phrase.ts](../packages/jazz-tools/src/runtime/recovery-phrase.ts)
 3. [packages/jazz-tools/src/runtime/passkey-backup.ts](../packages/jazz-tools/src/runtime/passkey-backup.ts)
 
-### Etapa 14: Produccion y operacion continua
+### Etapa 15: Produccion y operacion continua
 
 Objetivo:
 

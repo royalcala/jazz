@@ -129,4 +129,6 @@ Cuando eliges hosting hosted, create-jazz provisiona app y rellena .env con llav
 - React migraciones y evolucion de schema: [react-migraciones-evolucion-schema.md](./react-migraciones-evolucion-schema.md)
 - React publicacion de catalogo (schema/migrations/permissions): [react-publicacion-catalogo-schema-migrations-permissions.md](./react-publicacion-catalogo-schema-migrations-permissions.md)
 - React backend SDK + API de integraciones externas: [react-backend-sdk-api-integraciones.md](./react-backend-sdk-api-integraciones.md)
+- React arquitectura event-driven vs API HTTP: [react-event-driven-vs-api-http.md](./react-event-driven-vs-api-http.md)
+- React side effects de negocio (outbox + anti-entropy): [react-side-effects-negocio-outbox-anti-entropy.md](./react-side-effects-negocio-outbox-anti-entropy.md)
 
