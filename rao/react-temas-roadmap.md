@@ -8,13 +8,15 @@ Este documento es el plan de trabajo para cubrir los temas clave de Jazz en Reac
 2. Schema de datos
 3. Data patterns (patrones de modelado)
 4. Access control y permissions
-5. CRUD reactivo en UI
-6. Auth e identidad por camino (localfirst/hybrid/betterauth)
-7. Migraciones y evolucion de schema
-8. Publicacion de catalogo (schema/migrations/permissions)
-9. Operacion de auth server (JWT/JWKS) en hybrid/betterauth
-10. Recuperacion de identidad (recovery phrase/passkey)
-11. Produccion y operacion continua
+5. CRUD reactivo y sync scoping por org (Reading + Writing)
+6. Topologia de sync (local/edge/global)
+7. Internals de subscripciones y completitud de query
+8. Auth e identidad por camino (localfirst/hybrid/betterauth)
+9. Migraciones y evolucion de schema
+10. Publicacion de catalogo (schema/migrations/permissions)
+11. Operacion de auth server (JWT/JWKS) en hybrid/betterauth
+12. Recuperacion de identidad (recovery phrase/passkey)
+13. Produccion y operacion continua
 
 ## 2) Detalle por etapa
 
@@ -78,6 +80,7 @@ Referencias:
 1. [docs/content/docs/recipes/data-patterns/nested-data.mdx](../docs/content/docs/recipes/data-patterns/nested-data.mdx)
 2. [docs/content/docs/recipes/data-patterns/real-time-collaborative-list.mdx](../docs/content/docs/recipes/data-patterns/real-time-collaborative-list.mdx)
 3. [docs/content/docs/concepts/local-first-data-model.mdx](../docs/content/docs/concepts/local-first-data-model.mdx)
+4. Guia detallada de data patterns: [react-data-patterns.md](./react-data-patterns.md)
 
 ### Etapa 4: Access control y permissions
 
@@ -98,25 +101,88 @@ Referencias:
 3. [docs/content/docs/recipes/access-control/group-permissions.mdx](../docs/content/docs/recipes/access-control/group-permissions.mdx)
 4. [docs/content/docs/recipes/access-control/shared-access.mdx](../docs/content/docs/recipes/access-control/shared-access.mdx)
 5. [starters/react-localfirst/permissions.ts](../starters/react-localfirst/permissions.ts)
+6. Guia detallada de access control y permissions: [react-access-control-permissions.md](./react-access-control-permissions.md)
 
-### Etapa 5: CRUD reactivo en UI
+### Etapa 5: CRUD reactivo y sync scoping por org
 
 Objetivo:
 
 1. Implementar UX de lectura/escritura sobre Jazz.
+2. Garantizar que queries y subscriptions estén scopeadas por org activa.
 
 Entregables:
 
 1. Componentes CRUD funcionales.
 2. Manejo de estados de carga/error en acciones.
+3. Queries con filtro por `orgId` para evitar mezcla de datos entre orgs en la UI.
+4. Prueba de cambio de org activa con actualización correcta de resultados.
+
+Subtemas de esta etapa:
+
+1. Reading: queries, filtros/orden/paginacion, includes/relations.
+2. Writing: writes local-first, durabilidad por tier, transacciones/batches, validacion cliente+backend, rollback por rechazo server-side, files/blobs.
 
 Referencias:
 
 1. [starters/react-localfirst/src/todo-widget.tsx](../starters/react-localfirst/src/todo-widget.tsx)
 2. [starters/react-hybrid/src/todo-widget.tsx](../starters/react-hybrid/src/todo-widget.tsx)
 3. [starters/react-betterauth/src/todo-widget.tsx](../starters/react-betterauth/src/todo-widget.tsx)
+4. [docs/content/docs/concepts/how-sync-works.mdx](../docs/content/docs/concepts/how-sync-works.mdx)
+5. [docs/content/docs/reading/queries.mdx](../docs/content/docs/reading/queries.mdx)
+6. Guia dedicada: [react-sync-por-org.md](./react-sync-por-org.md)
+7. Reading (Queries, Filters/Sorting/Pagination, Includes/Relations): [react-reading-queries.md](./react-reading-queries.md)
+8. Writing (Writing Data, Files & Blobs): [react-writing-data-files-blobs.md](./react-writing-data-files-blobs.md)
 
-### Etapa 6: Auth e identidad por camino
+### Etapa 6: Topologia de sync (local/edge/global)
+
+Objetivo:
+
+1. Entender como se organiza Jazz entre local, edge y global en despliegues reales.
+2. Definir estrategia de conexion cliente -> edge y replicacion edge -> global.
+
+Entregables:
+
+1. Arquitectura documentada de core/global y edges por region.
+2. Runbook de arranque local con server core y uno o mas edges.
+3. Criterios de uso de `tier` (`local`, `edge`, `global`) por caso de uso.
+
+Notas clave:
+
+1. Core/global y edge usan el mismo binario (`jazz-tools server`), cambiando la configuracion.
+2. El modo edge se activa con `--upstream-url` y requiere `--admin-secret`.
+3. `tier` controla el primer snapshot de una suscripcion; luego los cambios siguen llegando de forma reactiva.
+
+Referencias:
+
+1. [docs/content/docs/concepts/how-sync-works.mdx](../docs/content/docs/concepts/how-sync-works.mdx)
+2. [docs/content/docs/getting-started/server-setup.mdx](../docs/content/docs/getting-started/server-setup.mdx)
+3. [crates/jazz-tools/src/server/builder.rs](../crates/jazz-tools/src/server/builder.rs)
+4. [crates/jazz-tools/tests/edge_server_sync.rs](../crates/jazz-tools/tests/edge_server_sync.rs)
+5. Guia detallada de topologia sync: [react-topologia-sync-edge-global.md](./react-topologia-sync-edge-global.md)
+
+### Etapa 7: Internals de subscripciones y completitud de query
+
+Objetivo:
+
+1. Entender como una query se registra en cliente y se propaga a runtime/sync.
+2. Entender como funciona `QuerySettled` y cuando una query se considera completa.
+
+Entregables:
+
+1. Flujo documentado extremo a extremo (`useAll` -> runtime -> sync -> `QuerySettled`).
+2. Criterio claro de completitud por tier (`local`, `edge`, `global`).
+3. Distincion operativa entre suscripciones reactivas y lecturas one-shot.
+
+Referencias:
+
+1. [packages/jazz-tools/src/react-core/use-all.ts](../packages/jazz-tools/src/react-core/use-all.ts)
+2. [packages/jazz-tools/src/subscriptions-orchestrator.ts](../packages/jazz-tools/src/subscriptions-orchestrator.ts)
+3. [packages/jazz-tools/src/runtime/client.ts](../packages/jazz-tools/src/runtime/client.ts)
+4. [crates/jazz-tools/src/query_manager/manager.rs](../crates/jazz-tools/src/query_manager/manager.rs)
+5. [crates/jazz-tools/src/sync_manager/inbox.rs](../crates/jazz-tools/src/sync_manager/inbox.rs)
+6. Guia detallada: [react-query-settled-completitud.md](./react-query-settled-completitud.md)
+
+### Etapa 8: Auth e identidad por camino
 
 Objetivo:
 
@@ -137,7 +203,7 @@ Referencias:
 6. [docs/content/docs/auth/sessions.mdx](../docs/content/docs/auth/sessions.mdx)
 7. [docs/content/docs/auth/local-first-auth.mdx](../docs/content/docs/auth/local-first-auth.mdx)
 
-### Etapa 7: Migraciones y evolucion de schema
+### Etapa 9: Migraciones y evolucion de schema
 
 Objetivo:
 
@@ -163,7 +229,7 @@ Referencias:
 3. [examples/docs/todo-server-ts/docs/migrations-workflow.sh](../examples/docs/todo-server-ts/docs/migrations-workflow.sh)
 4. [examples/docs/todo-server-ts/migrations/20260318-add-description-a01f5c72ec47-311995e9a178.ts](../examples/docs/todo-server-ts/migrations/20260318-add-description-a01f5c72ec47-311995e9a178.ts)
 
-### Etapa 8: Publicacion de catalogo
+### Etapa 10: Publicacion de catalogo
 
 Objetivo:
 
@@ -179,7 +245,7 @@ Referencias:
 1. [packages/jazz-tools/src/cli.ts](../packages/jazz-tools/src/cli.ts)
 2. [packages/jazz-tools/src/dev/index.ts](../packages/jazz-tools/src/dev/index.ts)
 
-### Etapa 9: Auth server y JWT/JWKS (si aplica)
+### Etapa 11: Auth server y JWT/JWKS (si aplica)
 
 Objetivo:
 
@@ -200,7 +266,7 @@ Referencias:
 5. [docs/content/docs/recipes/auth/auth-provider-integration.mdx](../docs/content/docs/recipes/auth/auth-provider-integration.mdx)
 6. [docs/content/docs/recipes/auth/better-auth-adapter.mdx](../docs/content/docs/recipes/auth/better-auth-adapter.mdx)
 
-### Etapa 10: Recuperacion de identidad
+### Etapa 12: Recuperacion de identidad
 
 Objetivo:
 
@@ -217,7 +283,7 @@ Referencias:
 2. [packages/jazz-tools/src/runtime/recovery-phrase.ts](../packages/jazz-tools/src/runtime/recovery-phrase.ts)
 3. [packages/jazz-tools/src/runtime/passkey-backup.ts](../packages/jazz-tools/src/runtime/passkey-backup.ts)
 
-### Etapa 11: Produccion y operacion continua
+### Etapa 13: Produccion y operacion continua
 
 Objetivo:
 

@@ -44,6 +44,9 @@ Roadmap tecnico para desarrollar por etapas:
 - [react-temas-roadmap.md](./react-temas-roadmap.md)
 - Entregable etapa 1 (branches + entornos): [react-branches-entornos.md](./react-branches-entornos.md)
 - Entregable etapa 2 (schema + flujo): [react-schema-datos-y-flujo.md](./react-schema-datos-y-flujo.md)
+- Entregable etapa 3 (data patterns): [react-data-patterns.md](./react-data-patterns.md)
+- Entregable etapa 4 (access control + permissions): [react-access-control-permissions.md](./react-access-control-permissions.md)
+- Guia de sync por org (queries + permissions): [react-sync-por-org.md](./react-sync-por-org.md)
 
 ## 2) Crear el proyecto
 

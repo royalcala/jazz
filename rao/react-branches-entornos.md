@@ -8,7 +8,20 @@ Este documento aterriza la Etapa 1 del roadmap: definir aislamiento de datos ant
 2. Definir una convención clara de `env` y `userBranch` por ambiente.
 3. Acordar como usar branches para QA, pruebas y preproduccion.
 
-## 2) Como funciona un branch en Jazz
+## 2) Explicación simple (30 segundos)
+
+Piensa en Jazz como cajones separados de datos.
+
+1. Tu defines dos llaves del cajon: `env` y `userBranch`.
+2. Jazz agrega una tercera llave automaticamente: `schemaHash`.
+3. Solo ves datos del cajon donde estas parado.
+
+Ejemplo rapido:
+
+1. Si escribes en `env=dev` y `userBranch=main`, ese dato no aparece en `env=prod`.
+2. Si escribes en `env=staging` y `userBranch=qa`, ese dato no aparece en `env=staging` y `userBranch=main`.
+
+## 3) Como funciona un branch en Jazz
 
 En Jazz, la rama efectiva combina tres partes:
 
@@ -20,20 +33,29 @@ Forma resultante:
 
 1. `env-schemaHash-userBranch`
 
-## 3) Regla mental importante
+## 4) Regla mental importante
 
 1. `env` y `userBranch` estan totalmente aislados entre si.
 2. Las versiones por `schemaHash` se componen en lectura via migraciones.
 3. Primero defines `env` y `userBranch`; luego schema/migrations se montan encima.
 
-## 4) Convencion sugerida para tu equipo
+## 5) Ejemplo paso a paso (que pasa en la practica)
+
+1. Abres tu app local con `env=dev` y `userBranch=main`.
+2. Creas un todo: "Comprar café".
+3. Cambias a `env=staging` y `userBranch=qa`.
+4. Ese todo no aparece, porque ahora estas en otro espacio de datos.
+5. Vuelves a `env=dev` y `userBranch=main`.
+6. El todo vuelve a aparecer.
+
+## 6) Convencion sugerida para tu equipo
 
 1. Local dev: `env=dev`, `userBranch=main`.
 2. QA funcional: `env=staging`, `userBranch=qa`.
 3. Release candidate: `env=staging`, `userBranch=rc`.
 4. Produccion: `env=prod`, `userBranch=main`.
 
-## 5) Snippet base de configuracion
+## 7) Snippet base de configuracion
 
 ```tsx
 createJazzClient({
@@ -44,14 +66,14 @@ createJazzClient({
 });
 ```
 
-## 6) Checklist de salida de Etapa 1
+## 8) Checklist de salida de Etapa 1
 
 1. Existe convención documentada de `env` y `userBranch`.
 2. Cada ambiente tiene un branch objetivo definido.
 3. CI/CD y configuracion de deploy respetan esa convención.
 4. El equipo entiende que `env/userBranch` no se mezclan en query.
 
-## 7) Siguiente paso recomendado
+## 9) Siguiente paso recomendado
 
 Despues de cerrar esta etapa, sigue con Etapa 2 (schema de datos):
 
@@ -59,7 +81,7 @@ Despues de cerrar esta etapa, sigue con Etapa 2 (schema de datos):
 2. Exportar `app` en `schema.ts`.
 3. Conectar UI y backend al mismo contrato.
 
-## 8) Referencias
+## 10) Referencias
 
 1. [docs/content/docs/concepts/branches.mdx](../docs/content/docs/concepts/branches.mdx)
 2. [docs/content/partials/create-jazz-client-reference.mdx](../docs/content/partials/create-jazz-client-reference.mdx)

@@ -66,6 +66,17 @@ Notas practicas:
 3. Nombra relaciones por intencion de dominio (projectId, ownerId, assigneeId).
 4. Deja optimizaciones de indexado para despues de validar flujo real.
 
+Reglas importantes del DSL oficial:
+
+1. Las columnas `s.ref(...)` deben terminar en `Id` o `_id`.
+2. Si usas arrays de refs, usa `Ids` o `_ids`.
+3. `schema.ts` es el origen de verdad; `permissions.ts` va separado y las migraciones van en `migrations/`.
+
+Referencias:
+
+1. [docs/content/docs/schemas/defining-tables.mdx](../docs/content/docs/schemas/defining-tables.mdx)
+2. [docs/content/docs/schemas/column-types.mdx](../docs/content/docs/schemas/column-types.mdx)
+
 ## 4) Compartir schema entre frontend y backend
 
 Si tienes frontend y backend separados, comparte el mismo modulo de schema.
@@ -134,7 +145,26 @@ flowchart LR
 - Demo actual usa memoryAdapter (no persistente).
 - Para produccion, cambiar a adaptador persistente.
 
-## 7) Checklist de salida de Etapa 2
+## 7) Estado actual y faltantes para cerrarla al 100%
+
+Estado:
+
+1. La guia ya cubre bien la base tecnica de schema y flujo end-to-end.
+
+Faltantes para tu caso real (si aun no estan hechos):
+
+1. Sustituir la plantilla ejemplo por tus entidades reales de negocio.
+2. Definir cardinalidades y ownership de cada relacion (para preparar Etapa 3 y 4).
+3. Elegir tipos de columna finales (incluyendo estrategia para archivos/blobs si aplica).
+4. Validar localmente el schema antes de pasar a las siguientes etapas.
+
+Comando recomendado de validacion:
+
+```bash
+pnpm dlx jazz-tools@alpha validate
+```
+
+## 8) Checklist de salida de Etapa 2
 
 1. Existe schema.ts versionado con tablas de dominio reales.
 2. Frontend usa app del schema compartido.
@@ -142,10 +172,15 @@ flowchart LR
 4. Hay al menos un flujo CRUD funcionando extremo a extremo.
 5. El equipo entiende donde persiste cada capa (OPFS vs SQLite vs memoria).
 
-## 8) Siguiente paso recomendado
+## 9) Siguiente paso recomendado
 
-Despues de cerrar este documento, sigue con Etapa 3 (permissions.ts):
+Despues de cerrar este documento, sigue con Etapa 3 (data patterns):
 
-1. Define ownership por tabla.
-2. Define reglas read/insert/update/delete.
-3. Prueba casos permitidos y denegados.
+1. Elegir patron principal de modelado (nested o collaborative list).
+2. Ajustar schema a ese patron.
+3. Dejar listo el terreno para Etapa 4 (access control y permissions).
+
+Referencias:
+
+1. [docs/content/docs/recipes/data-patterns/nested-data.mdx](../docs/content/docs/recipes/data-patterns/nested-data.mdx)
+2. [docs/content/docs/recipes/data-patterns/real-time-collaborative-list.mdx](../docs/content/docs/recipes/data-patterns/real-time-collaborative-list.mdx)

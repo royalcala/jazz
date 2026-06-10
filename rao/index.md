@@ -119,4 +119,11 @@ Cuando eliges hosting hosted, create-jazz provisiona app y rellena .env con llav
 - React roadmap tecnico (etapas): [react-temas-roadmap.md](./react-temas-roadmap.md)
 - React etapa 1 (branches + entornos): [react-branches-entornos.md](./react-branches-entornos.md)
 - React etapa 2 (schema + flujo): [react-schema-datos-y-flujo.md](./react-schema-datos-y-flujo.md)
+- React etapa 3 (data patterns): [react-data-patterns.md](./react-data-patterns.md)
+- React etapa 4 (access control + permissions): [react-access-control-permissions.md](./react-access-control-permissions.md)
+- React sync por org: [react-sync-por-org.md](./react-sync-por-org.md)
+- React reading (queries/filters/includes): [react-reading-queries.md](./react-reading-queries.md)
+- React writing (data/files/blobs): [react-writing-data-files-blobs.md](./react-writing-data-files-blobs.md)
+- React topologia sync (local/edge/global): [react-topologia-sync-edge-global.md](./react-topologia-sync-edge-global.md)
+- React internals de QuerySettled/completitud: [react-query-settled-completitud.md](./react-query-settled-completitud.md)
 
