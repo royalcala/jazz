@@ -36,6 +36,12 @@ packages/
   domain/
 ```
 
+Ubicacion de Jazz Inspector en esta estructura:
+
+1. No forma parte del runtime de negocio (`web`, `api`, `worker`).
+2. Entra como herramienta de operacion/debugging.
+3. Puedes usarlo hosted (sin agregar paquete al proyecto) o como paquete interno de tooling en monorepo.
+
 ### 3.2 Raiz del monorepo
 
 `pnpm-workspace.yaml`:
@@ -348,6 +354,43 @@ En staging/prod:
 2. Usa Live Query para observar subscripciones activas.
 3. Trata `adminSecret` como credencial de infraestructura.
 
+### 15.1 Jazz Inspector: que ocupas para correrlo y donde entra
+
+Donde entra:
+
+1. Capa de operacion/soporte.
+2. No reemplaza `api` ni `worker`.
+3. No se embebe en la UI de producto por defecto.
+
+Que necesitas para conectarlo:
+
+1. `serverUrl` del sync server.
+2. `appId`.
+3. `adminSecret`.
+4. `env` (normalmente `dev`, `staging`, `prod`).
+5. `branch` (normalmente `main`).
+
+Opciones de ejecucion:
+
+1. Hosted (recomendado para operacion diaria):
+  1. Abrir `https://v2.inspector.jazz.tools/`.
+  2. Conectar con `serverUrl`, `appId`, `adminSecret`, `env`, `branch`.
+2. Standalone local (si trabajas dentro de este monorepo):
+
+```bash
+pnpm -C packages/inspector dev
+```
+
+Luego abrir `http://localhost:5173`.
+
+3. Extension DevTools (opcional para debugging de runtime en navegador):
+
+```bash
+pnpm -C packages/inspector build:extension
+```
+
+Y cargar `packages/inspector/dist-extension` en `chrome://extensions` (Load unpacked).
+
 ## 16) Checklist rapido de inicio
 
 1. Elegir starter `react-betterauth`.
@@ -375,3 +418,6 @@ En staging/prod:
 11. Workspace package manager: [pnpm-workspace.yaml](../pnpm-workspace.yaml)
 12. Topologia global + edge: [react-topologia-sync-edge-global.md](./react-topologia-sync-edge-global.md)
 13. Edge vs Global (responsabilidades y flujo real): [react-edge-vs-global-funcionalidad-responsabilidades.md](./react-edge-vs-global-funcionalidad-responsabilidades.md)
+14. Inspector (referencia oficial): [docs/content/docs/reference/inspector.mdx](../docs/content/docs/reference/inspector.mdx)
+15. Inspector package (modo standalone/extension): [packages/inspector/README.md](../packages/inspector/README.md)
+16. Guia detallada de Inspector: [react-jazz-inspector-reading-writing-como-correr.md](./react-jazz-inspector-reading-writing-como-correr.md)
