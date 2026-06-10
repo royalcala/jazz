@@ -158,18 +158,51 @@ Regla operativa:
 
 Escenario: monorepo con `web`, `api`, `worker` y sync self-hosted.
 
+No es solo seguir la estructura: tambien necesitas comandos para inicializar y levantar cada servicio.
+
+0. Si aun no creaste el frontend/proyecto base, primero scaffold:
+
+```bash
+pnpm create jazz
+```
+
 1. Instalar dependencias en raiz:
 
 ```bash
 pnpm install
 ```
 
-2. Definir variables minimas de entorno:
+2. Definir variables minimas de entorno (puedes usar `export` o `.env`):
 
 ```bash
 export JAZZ_APP_ID="<tu-app-id>"
 export JAZZ_ADMIN_SECRET="<tu-admin-secret>"
 export JAZZ_SERVER_URL="http://127.0.0.1:1625"
+```
+
+2.1 Opcion recomendada: guardarlas en archivo `.env`.
+
+Ejemplo en raiz del proyecto:
+
+```bash
+JAZZ_APP_ID=<tu-app-id>
+JAZZ_ADMIN_SECRET=<tu-admin-secret>
+JAZZ_SERVER_URL=http://127.0.0.1:1625
+VITE_JAZZ_APP_ID=<tu-app-id>
+```
+
+Notas practicas:
+
+1. En frontend Vite, la variable publica debe estar disponible como `VITE_JAZZ_APP_ID`.
+2. En monorepo, normalmente tendras un `.env` por app (`apps/web/.env.local`, `apps/api/.env`, `apps/worker/.env`).
+3. No comitear secretos reales de `staging/prod`; usar secretos del proveedor de deploy.
+
+2.2 Si usas `.env` en shell, cargalo antes de correr comandos manuales:
+
+```bash
+set -a
+source .env
+set +a
 ```
 
 3. Levantar server global local (Terminal A):
@@ -187,7 +220,28 @@ pnpm dlx jazz-tools@alpha server "$JAZZ_APP_ID" \
 pnpm dev
 ```
 
-4.1 Modo dev para auto-push de `schema.ts` y `permissions.ts`:
+4.1 Si quieres levantar servicios por separado (en vez de todo con `pnpm dev`):
+
+```bash
+# frontend
+pnpm --filter ./apps/web dev
+
+# api
+pnpm --filter ./apps/api dev
+
+# worker
+pnpm --filter ./apps/worker dev
+```
+
+Si usas otros nombres o rutas de paquetes, ajusta el filtro (`--filter`) a tu estructura real.
+
+4.2 Convencion minima de scripts por app (recomendado):
+
+1. `dev` para desarrollo local.
+2. `build` para compilar artefactos.
+3. `start` para ejecutar build en entorno no-dev.
+
+4.3 Modo dev para auto-push de `schema.ts` y `permissions.ts`:
 
 1. Debe estar corriendo el proceso dev del frontend que tiene activo `jazzPlugin`.
 2. En monorepo puedes correr todo (`pnpm dev`) o solo web (`pnpm --filter ./apps/web dev`).
