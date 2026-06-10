@@ -21,6 +21,10 @@ Este documento es el plan de trabajo para cubrir los temas clave de Jazz en Reac
 15. Recuperacion de identidad (recovery phrase/passkey)
 16. Produccion y operacion continua
 17. Operacion con Jazz Inspector (reading/writing/observabilidad)
+18. Arquitectura dev -> produccion (hybrid + event-driven + monorepo)
+19. Better Auth persistente desde dev/local -> corte a produccion
+20. Guia completa de inicio de proyecto (integracion de todos los puntos)
+21. Edge vs Global: funcionalidad y separacion de responsabilidades
 
 ## 2) Detalle por etapa
 
@@ -398,6 +402,95 @@ Referencias:
 3. [packages/inspector/src/components/data-explorer/TableDataGrid.tsx](../packages/inspector/src/components/data-explorer/TableDataGrid.tsx)
 4. [packages/inspector/src/pages/live-query/index.tsx](../packages/inspector/src/pages/live-query/index.tsx)
 5. Guia detallada de Jazz Inspector: [react-jazz-inspector-reading-writing-como-correr.md](./react-jazz-inspector-reading-writing-como-correr.md)
+
+### Etapa 18: Arquitectura dev -> produccion (hybrid + event-driven + monorepo)
+
+Objetivo:
+
+1. Arrancar rapido en dev sin frenar por migraciones avanzadas.
+2. Evolucionar a produccion con Better Auth y sync server dedicado.
+3. Integrar API de negocio + workers event-driven con outbox durable.
+
+Entregables:
+
+1. Estructura de monorepo definida (`web`, `api`, `worker`, paquetes compartidos).
+2. Flujo operativo documentado por fases (dev, preprod, prod).
+3. Patron API + outbox + subscriptions + catch-up polling acordado.
+
+Referencias:
+
+1. [docs/content/docs/quickstart.mdx](../docs/content/docs/quickstart.mdx)
+2. [starters/react-hybrid/README.md](../starters/react-hybrid/README.md)
+3. [docs/content/docs/getting-started/server-setup.mdx](../docs/content/docs/getting-started/server-setup.mdx)
+4. [docs/content/docs/install/typescript-server.mdx](../docs/content/docs/install/typescript-server.mdx)
+5. Guia detallada: [react-arquitectura-dev-prod-hybrid-event-driven.md](./react-arquitectura-dev-prod-hybrid-event-driven.md)
+
+### Etapa 19: Better Auth persistente desde dev/local -> corte a produccion
+
+Objetivo:
+
+1. Definir un flujo de inicio con Better Auth persistente tambien en local.
+2. Operar desarrollo sin bloqueo por migraciones en etapas tempranas.
+3. Evitar diferencias fuertes entre dev y produccion en auth/sesiones.
+
+Entregables:
+
+1. Runbook dev/local (arranque persistente y reset coordinado cuando aplique).
+2. Checklist de corte a produccion (auth persistente, migraciones, deploy).
+3. Matriz dev vs produccion para auth/schema/permisos.
+
+Referencias:
+
+1. [starters/react-betterauth/README.md](../starters/react-betterauth/README.md)
+2. [docs/content/docs/getting-started/client-setup.mdx](../docs/content/docs/getting-started/client-setup.mdx)
+3. [docs/content/docs/schemas/migrations.mdx](../docs/content/docs/schemas/migrations.mdx)
+4. [docs/content/docs/getting-started/server-setup.mdx](../docs/content/docs/getting-started/server-setup.mdx)
+5. Guia detallada: [react-betterauth-dev-local-sin-migraciones-a-produccion.md](./react-betterauth-dev-local-sin-migraciones-a-produccion.md)
+
+### Etapa 20: Guia completa de inicio de proyecto (integracion de todos los puntos)
+
+Objetivo:
+
+1. Unificar en un solo documento el camino completo dev local -> produccion.
+2. Cubrir setup inicial, APP_ID, auth, schema/permisos, seed, branching, event-driven y corte a prod.
+3. Tener runbook de referencia para arranque de nuevos proyectos.
+
+Entregables:
+
+1. Documento unico de inicio con decisiones y checklists.
+2. Ruta de evolucion por fases con riesgos y mitigaciones.
+3. Referencias cruzadas a guias especializadas para profundizar.
+
+Referencias:
+
+1. [docs/content/docs/quickstart.mdx](../docs/content/docs/quickstart.mdx)
+2. [docs/content/docs/getting-started/client-setup.mdx](../docs/content/docs/getting-started/client-setup.mdx)
+3. [docs/content/docs/getting-started/server-setup.mdx](../docs/content/docs/getting-started/server-setup.mdx)
+4. [docs/content/docs/schemas/migrations.mdx](../docs/content/docs/schemas/migrations.mdx)
+5. Guia detallada: [react-guia-inicio-proyecto-completo-dev-a-produccion.md](./react-guia-inicio-proyecto-completo-dev-a-produccion.md)
+
+### Etapa 21: Edge vs Global (funcionalidad y separacion de responsabilidades)
+
+Objetivo:
+
+1. Entender como se reparten responsabilidades entre `local`, `edge` y `global`.
+2. Aclarar que parte del sync es baseline (catalogo) y que parte es por demanda (scope de queries).
+3. Definir criterio operativo para crecer de global unico a edges regionales.
+
+Entregables:
+
+1. Documento de responsabilidades por capa (`local`, `edge`, `global`).
+2. Flujo lectura/escritura extremo a extremo en topologia multi-edge.
+3. Checklist operativo para despliegue y observabilidad por region.
+
+Referencias:
+
+1. [docs/content/docs/concepts/how-sync-works.mdx](../docs/content/docs/concepts/how-sync-works.mdx)
+2. [crates/jazz-tools/src/sync_manager/mod.rs](../crates/jazz-tools/src/sync_manager/mod.rs)
+3. [crates/jazz-tools/src/query_manager/subscriptions.rs](../crates/jazz-tools/src/query_manager/subscriptions.rs)
+4. [crates/jazz-tools/src/query_manager/server_queries.rs](../crates/jazz-tools/src/query_manager/server_queries.rs)
+5. [crates/jazz-tools/tests/edge_server_sync.rs](../crates/jazz-tools/tests/edge_server_sync.rs)
+6. Guia detallada: [react-edge-vs-global-funcionalidad-responsabilidades.md](./react-edge-vs-global-funcionalidad-responsabilidades.md)
 
 ## 3) Seguimiento sugerido
 

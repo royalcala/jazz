@@ -125,6 +125,7 @@ Cuando eliges hosting hosted, create-jazz provisiona app y rellena .env con llav
 - React reading (queries/filters/includes): [react-reading-queries.md](./react-reading-queries.md)
 - React writing (data/files/blobs): [react-writing-data-files-blobs.md](./react-writing-data-files-blobs.md)
 - React topologia sync (local/edge/global): [react-topologia-sync-edge-global.md](./react-topologia-sync-edge-global.md)
+- React edge vs global (funcionalidad y responsabilidades): [react-edge-vs-global-funcionalidad-responsabilidades.md](./react-edge-vs-global-funcionalidad-responsabilidades.md)
 - React internals de QuerySettled/completitud: [react-query-settled-completitud.md](./react-query-settled-completitud.md)
 - React migraciones y evolucion de schema: [react-migraciones-evolucion-schema.md](./react-migraciones-evolucion-schema.md)
 - React publicacion de catalogo (schema/migrations/permissions): [react-publicacion-catalogo-schema-migrations-permissions.md](./react-publicacion-catalogo-schema-migrations-permissions.md)
@@ -133,4 +134,7 @@ Cuando eliges hosting hosted, create-jazz provisiona app y rellena .env con llav
 - React side effects de negocio (outbox + anti-entropy): [react-side-effects-negocio-outbox-anti-entropy.md](./react-side-effects-negocio-outbox-anti-entropy.md)
 - React persistencia interna + visor externo: [react-persistencia-interna-modelado-branches-usuarios-registros-visor-externo.md](./react-persistencia-interna-modelado-branches-usuarios-registros-visor-externo.md)
 - React Jazz Inspector (reading/writing + como correrlo): [react-jazz-inspector-reading-writing-como-correr.md](./react-jazz-inspector-reading-writing-como-correr.md)
+- React arquitectura dev -> produccion (hybrid + event-driven + monorepo): [react-arquitectura-dev-prod-hybrid-event-driven.md](./react-arquitectura-dev-prod-hybrid-event-driven.md)
+- React Better Auth persistente desde dev/local -> produccion: [react-betterauth-dev-local-sin-migraciones-a-produccion.md](./react-betterauth-dev-local-sin-migraciones-a-produccion.md)
+- React guia completa de inicio (dev local -> produccion): [react-guia-inicio-proyecto-completo-dev-a-produccion.md](./react-guia-inicio-proyecto-completo-dev-a-produccion.md)
 
